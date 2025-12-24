@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Editar Documento -->
+<div id="editar-documento" class="page active">
+    <h2 class="page-title">Editar Documento</h2>
+    <div id="edit-documents-list" class="list-container">
+        {% if docs_list %}
+            {% for doc in docs_list %}
+                <div class="list-item">
+                    <div>
+                        <div class="document-title">{{ doc[0] }}</div>
+                        <div class="document-tags">
+                            {% if doc[1] %}
+                                {% for tag in doc[1] %}
+                                    <span class="tag">{{ tag }}</span>
+                                {% endfor %}   
+                            {% endif %}    
+                        </div>
+                    </div>
+                    <div>
+                        
+                        <div class="edit-button">
+                            <form action="/edit-doc" method="POST" class="list-item-actions">
+                                <input type="hidden" name="doc">
+                                <button class="btn btn-small btn-edit" onclick="edit_document(this)"><img class="edit-icon" src="../static/images/edic-icon.png" alt="edit-icon"></button>
+                            </form>
+                            <form action="/delete-doc" method="POST" class="list-item-actions">
+                                <input type="hidden" name="doc">
+                                <button class="btn btn-small btn-delete" onclick="edit_document(this)">Excluir</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">Nenhum documento encontrado. Crie seu primeiro documento!</div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

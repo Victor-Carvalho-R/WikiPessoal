@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Criar Tag -->
+<div id="criar-tag" class="page active">
+    <h2 class="page-title">Criar Tag</h2>
+    <form action="/create-tag" method="POST">
+        <div class="form-group">
+            <label class="form-label">Nome da Tag</label>
+            <input name="tag-name" class="form-input" id="tag-name" required>
+        </div>
+        <button type="submit" class="btn">Criar Tag</button>
+    </form>
+</div>
+
+{% endblock %}

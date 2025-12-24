@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Editar Tag -->
+<div id="editar-tag" class="page active">
+    <h2 class="page-title">Editar Tag</h2>
+    <div id="edit-tags-list" class="list-container">
+        {% if tags_list %}
+        {% for tag in tags_list %}
+            <div class="list-item">
+                <div class="tag-instance">
+                    <div><strong>{{ tag }}</strong></div>
+                    <form action="/delete-tag" method="POST" class="list-item-actions">
+                        <input type="hidden" name="tag">
+                        <button type="submit" class="btn btn-small btn-delete" onclick="delete_tag(this)">Excluir</button>
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+        {% else %}
+            <div class="empty-state">Nenhuma tag para editar.</div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

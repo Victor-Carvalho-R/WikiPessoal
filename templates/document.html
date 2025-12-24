@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="document-container">
+    <!-- Cabeçalho do documento -->
+    <div class="document-header">
+        <h1 class="document-title">{{ doc_data[0] }}</h1>
+        
+        <div class="document-meta">
+            <div class="document-tags">
+                {% for tag in doc_data[1]["tags"] %}
+                    <span class="tag">{{ tag }}</span>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="document-container">
+    <!-- Corpo do documento -->
+    <div class="document-body">
+        
+        <script>
+            doc_body = document.querySelector(".document-body")
+            doc_body.insertAdjacentHTML("afterbegin", `{{ doc_data[1]['txt'] | safe }}`)
+        </script>
+    </div>
+</div>
+
+{% endblock %}

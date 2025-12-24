@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Wiki Pessoal</title>
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a href="/">
+            <div class="logo">
+                <h1>Wiki Pessoal</h1>
+            </div>
+        </a>
+        <a href="/" id="nav-home" class="nav-item">Home</a>
+        <a href="/create-doc" id="nav-create-document" class="nav-item">Criar Documento</a>
+        <a href="/edit-doc" id="nav-edit-document" class="nav-item">Editar Documento</a>
+        <a href="/create-tag" id="nav-create-tag" class="nav-item">Criar Tag</a>
+        <a href="/edit-tag" id="nav-edit-tag" class="nav-item">Editar Tag</a>
+        <script src="../static/highlight_tab.js"></script>
+        <script>highlight_tab("{{ highlight }}")</script>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <!-- Carregar .js -->
+    <script src="../static/script_legal.js"></script>
+</body>
+</html>

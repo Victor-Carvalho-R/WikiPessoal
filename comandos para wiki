@@ -1,0 +1,3 @@
+sudo systemctl stop ollama
+HSA_OVERRIDE_GFX_VERSION=10.3.0 OLLAMA_ORIGINS="*" ollama serve
+/home/victor/Documents/ProjetoWiki/main.py
