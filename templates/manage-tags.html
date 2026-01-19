@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Criar Tag -->
+<div id="criar-tag" class="page active">
+    <h2 class="page-title">Criar Tag</h2>
+    <form action="/manage-tags/create" method="POST">
+        <div class="form-group">
+            <label class="form-label">Nome da Tag</label>
+            <input type="text" class="search-box" name="tag-name" autocomplete="off" oninput="search_tags(this.value)" required>
+        </div>
+        <button type="submit" class="btn">Criar Tag</button>
+    </form>
+    <hr>
+    <!-- Edit tags -->
+     <div style="display: flex; flex-direction: row;">
+        <p>Tags&nbsp</p>
+        <p style="color: rgb(200, 97, 97);">vermelhas&nbsp</p>
+        <p>não estão em uso.</p>
+    </div>
+    <div id="edit-tags-list" class="list-container">
+        {% if tags_content %}
+        {% for tag in tags_content.keys() %}
+            <div class="list-item">
+                <div class="tag-instance">
+                    {% if tags_content[tag] %}
+                        <div><strong>{{ tag }}</strong></div>
+                    {% else %}
+                        <div><strong style="color: rgb(200, 97, 97);">{{ tag }}</strong></div>
+                    {% endif %}
+                    <form action="/manage-tags/delete" method="POST" class="list-item-actions">
+                        <input type="hidden" name="tag">
+                        <button type="submit" class="btn-delete" onclick="delete_tag(this)"><img  class="delete-icon" src="../static/images/delete-document-x-icon.png" alt="x"></button>
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+        {% else %}
+            <div class="empty-state">Nenhuma tag para editar.</div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

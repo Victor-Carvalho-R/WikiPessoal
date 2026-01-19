@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<!-- Criar Documento -->
+<div id="criar-documento" class="page active">
+    <h2 class="page-title">Criar Documento</h2>
+    <form action="/create-doc" method="POST">
+        <div class="form-group">
+            <label class="form-label">Título</label>
+            {% if doc_info %}
+                <input value="{{ doc_info[0] }}" name="doc-title" class="form-input" id="doc-title" readonly>
+            {% else %}
+                <input name="doc-title" class="form-input" id="doc-title" required>
+            {% endif %}
+            
+        </div>
+        <div class="form-group">
+            <label class="form-label">Conteúdo</label>
+            <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+            <div id="editor"></div>
+            
+            <input type="hidden" name="doc-content" id="doc-content">
+
+            <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+            <script>
+                const quill = new Quill('#editor', {
+                    theme: 'snow'
+                });
+
+                // salvar html no hidden input
+                document.querySelector("form").addEventListener("submit", () => {
+                    document.getElementById("doc-content").value = quill.root.innerHTML;
+                });
+            </script>
+        </div>
+        
+        {% if doc_info %}
+        <script>
+            ql_editor = document.querySelector(".ql-editor")
+            ql_editor.insertAdjacentHTML("afterbegin", `{{ doc_info[2] | safe }}`)
+        </script>
+        {% endif %}
+        
+        <div class="form-group">
+            <div class="ai-request">
+                <label class="form-label">Peça ajuda para a IA</label>
+                <textarea placeholder="Insira seu prompt..." id="ai-input" rows="6"></textarea>
+                <div class="ai-request-div">
+                    <div class="btn ai-request-button" onclick="get_ai_output(this)">Enviar</div>
+                    <p id="ai-wait-message" class="hidden">Processando seu input...</p>
+                </div>
+            </div>
+            <div class="document-container ai-content-block hidden">
+                <div class="document-body">
+                    <!-- aqui vem o output da IA -->
+                </div>
+                <img class="x-icon" src="../static/images/x-icon.png" alt="x" onclick="hide_ai_output()">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Arquivo (opcional)</label>
+            <input type="file" class="form-input" id="doc-file" accept="image/*,video/*,audio/*" onchange="previewFile(event)">
+            <div id="file-preview" class="file-preview" style="display: none;"></div>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Tags</label>
+            <div id="criar-tag" class="page active">
+                <input name="tag-name" class="form-input" id="tag-name" autocomplete="off">
+                <div class="btn create-tag-bonus" onclick="create_tag_via_create_document(this)">Criar Tag</div>
+            </div>
+            <div id="tag-selector" class="tag-selector">
+                {% for tag in tags_list %}
+                    {% if doc_info %}
+                        {% if tag in doc_info[1] %}
+                            <div class="tag-option selected" onclick="toggle_tag(this)">{{ tag }}</div>
+                        {% else %}
+                            <div class="tag-option" onclick="toggle_tag(this)">{{ tag }}</div>
+                        {% endif %}
+                    {% else %}
+                        <div class="tag-option" onclick="toggle_tag(this)">{{ tag }}</div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <input type="hidden" name="selected-tags">
+        {% if doc_info %}
+            <button type="submit" class="btn" onclick="get_selected_tags(this)">Salvar Alterações</button>
+        {% else %}
+            <button type="submit" class="btn" onclick="get_selected_tags(this)">Criar Documento</button>
+        {% endif %}
+    </form>
+</div>
+
+{% endblock %}
