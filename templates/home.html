@@ -12,6 +12,9 @@
         oninput="search_documents(this.value)"
         >
     </div>
+    {% if not docs_list %}
+        <div class="empty-state">Nenhum documento criado.</div>
+    {% endif %}
     <div id="documents-container" class="documents-grid">
         {% if docs_list %}
             {% for doc in docs_list %}

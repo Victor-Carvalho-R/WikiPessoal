@@ -11,11 +11,11 @@ path = os.getcwd()
 
 # ler data.json
 def get_data():
-    with open(f"{path}/data.json", "r") as data_json:
-        try:
+    try:
+        with open(f"{path}/data.json", "r") as data_json:
             data = json.load(data_json)
-        except:
-            data = {"Documentos": {}, "Tags": {}}
+    except:
+        data = {"Documentos": {}, "Tags": {}}
     
     return data
 

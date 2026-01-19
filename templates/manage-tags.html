@@ -18,25 +18,26 @@
         <p style="color: rgb(200, 97, 97);">vermelhas&nbsp</p>
         <p>não estão em uso.</p>
     </div>
+    {% if not tags_content %}
+        <div class="empty-state">Nenhuma tag criada.</div>
+    {% endif %}
     <div id="edit-tags-list" class="list-container">
         {% if tags_content %}
-        {% for tag in tags_content.keys() %}
-            <div class="list-item">
-                <div class="tag-instance">
-                    {% if tags_content[tag] %}
-                        <div><strong>{{ tag }}</strong></div>
-                    {% else %}
-                        <div><strong style="color: rgb(200, 97, 97);">{{ tag }}</strong></div>
-                    {% endif %}
-                    <form action="/manage-tags/delete" method="POST" class="list-item-actions">
-                        <input type="hidden" name="tag">
-                        <button type="submit" class="btn-delete" onclick="delete_tag(this)"><img  class="delete-icon" src="../static/images/delete-document-x-icon.png" alt="x"></button>
-                    </form>
+            {% for tag in tags_content.keys() %}
+                <div class="list-item">
+                    <div class="tag-instance">
+                        {% if tags_content[tag] %}
+                            <div><strong>{{ tag }}</strong></div>
+                        {% else %}
+                            <div><strong style="color: rgb(200, 97, 97);">{{ tag }}</strong></div>
+                        {% endif %}
+                        <form action="/manage-tags/delete" method="POST" class="list-item-actions">
+                            <input type="hidden" name="tag">
+                            <button type="submit" class="btn-delete" onclick="delete_tag(this)"><img  class="delete-icon" src="../static/images/delete-document-x-icon.png" alt="x"></button>
+                        </form>
+                    </div>
                 </div>
-            </div>
-        {% endfor %}
-        {% else %}
-            <div class="empty-state">Nenhuma tag para editar.</div>
+            {% endfor %}
         {% endif %}
     </div>
 </div>
