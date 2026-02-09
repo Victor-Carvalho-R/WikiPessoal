@@ -70,7 +70,7 @@ def create_doc():
     # ler data.json
     data = get_data()
     
-    # Pegar e tratar conteúdo do documento
+    # pegar e tratar conteúdo do documento
     content = request.form["doc-content"]
     content = content.replace("<p><br></p>", "\n")
     content = content.strip()
@@ -79,11 +79,18 @@ def create_doc():
     # criar registro do documento
     docs_data = data["Documentos"]
     doc_title = request.form["doc-title"]
-    selected_tags = json.loads(request.form["selected-tags"])
-    docs_data[doc_title] = {"aud": "", "img": "", "txt": content, "vid": "", "tags": selected_tags}
+    current_selected_tags = docs_data[doc_title]["tags"] if doc_title in docs_data.keys() else []
+    updated_selected_tags = json.loads(request.form["selected-tags"])
+    docs_data[doc_title] = {"aud": "", "img": "", "txt": content, "vid": "", "tags": updated_selected_tags}
+    
+    # identificar se há alguma tag removida, qual/quais é/são e remover o registro do documento na tag
+    tags_data = data["Tags"]
+    removed_tags = set(current_selected_tags) - set(updated_selected_tags)
+    if removed_tags:
+        for tagname in removed_tags:
+            tags_data[tagname].remove(doc_title)
     
     # adicionar nome do documento na tag
-    tags_data = data["Tags"]
     for tagname in docs_data[doc_title]["tags"]:
         if not doc_title in tags_data[tagname]:
             tags_data[tagname].append(doc_title)
@@ -207,8 +214,8 @@ def registrar_tag():
     # verificar se tag existe. Caso não, criar o registro
     dados = request.get_json()
     tag = dados["tag"]
-    if tag in tags:
-        validacao = 0 # comunicar ao js que tag não será criada pois já existe
+    if not tag or tag in tags:
+        validacao = 0 # comunicar ao js que tag não será criada pois já existe ou foi enviado um valor vazio
     else:
         validacao = 1 # comunicar ao js que tag será criada
         tags_data[tag] = []
@@ -253,7 +260,6 @@ def get_tag_documents():
 
     # pegar tags
     tags_data = data["Tags"]
-    print(tags_data)
 
     return tags_data
 
