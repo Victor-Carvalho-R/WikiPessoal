@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
+import subprocess
 import json
 import os
 
@@ -226,6 +227,18 @@ def registrar_tag():
 
     return jsonify({"validacao": validacao})
 
+# Pegar input da IA
+@app.route("/api", methods=["POST"])
+def get_ai_output():
+    prompt = request.json["prompt"]
+    command = ["./geminicli_request.sh", prompt]
+
+    try:
+        output = subprocess.run(command, capture_output=True, text=True, check=True)
+    except subprocess.CalledProcessError as e:
+        output = e.stderr
+
+    return jsonify({"output": output.stdout})
 
 # Listar documentos
 def list_docs():

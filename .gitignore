@@ -1,3 +1,4 @@
 data.json
 __pycache__/
 .venv
+geminicli_request.sh
